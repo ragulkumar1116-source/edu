@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced System Manual | Engineering Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-code: #0d1117;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            background-color: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .version {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.25rem;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+        }
+
+        .nav-link.active {
+            font-weight: 500;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .page-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-description {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Content Sections */
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 2rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--accent);
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background-color: var(--bg-code);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: rgba(255,255,255,0.05);
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        pre {
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            color: #e6edf3;
+        }
+
+        .inline-code {
+            background-color: var(--bg-secondary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            color: var(--accent);
+            font-size: 0.9em;
+        }
+
+        /* Syntax Highlighting */
+        .keyword { color: #ff7b72; }
+        .string { color: #a5d6ff; }
+        .comment { color: #8b949e; font-style: italic; }
+        .function { color: #d2a8ff; }
+        .number { color: #79c0ff; }
+
+        /* Info Boxes */
+        .info-box {
+            border-left: 4px solid var(--accent);
+            background-color: rgba(59, 130, 246, 0.1);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box {
+            border-left-color: var(--warning);
+            background-color: rgba(245, 158, 11, 0.1);
+        }
+
+        .danger-box {
+            border-left-color: var(--danger);
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .success-box {
+            border-left-color: var(--success);
+            background-color: rgba(16, 185, 129, 0.1);
+        }
+
+        .info-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: rgba(255,255,255,0.05);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 1rem 0 1rem 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Search */
+        .search-box {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Mobile Toggle */
+        .mobile-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .main-content {
+                padding: 2rem;
+                margin-top: 3rem;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.875rem;
+            }
+            
+            pre {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            z-index: 1000;
+            transition: width 0.1s;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰ Menu</button>
+    
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                System Manual
+            </div>
+            <span class="version">v2.4.0 Advanced</span>
+            
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search documentation..." id="searchInput">
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-title">Getting Started</div>
+                    <a href="#overview" class="nav-link active">Overview</a>
+                    <a href="#architecture" class="nav-link">Architecture</a>
+                    <a href="#installation" class="nav-link">Installation</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Configuration</div>
+                    <a href="#environment" class="nav-link">Environment Setup</a>
+                    <a href="#database" class="nav-link">Database Config</a>
+                    <a href="#security" class="nav-link">Security Settings</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">API Reference</div>
+                    <a href="#endpoints" class="nav-link">Endpoints</a>
+                    <a href="#authentication" class="nav-link">Authentication</a>
+                    <a href="#webhooks" class="nav-link">Webhooks</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">Advanced</div>
+                    <a href="#clustering" class="nav-link">Clustering</a>
+                    <a href="#optimization" class="nav-link">Optimization</a>
+                    <a href="#troubleshooting" class="nav-link">Troubleshooting</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">Advanced System Documentation</h1>
+                <p class="page-description">
+                    Complete technical reference for engineers implementing and maintaining the advanced distributed system. 
+                    Covers architecture, configuration, API specifications, and advanced optimization techniques.
+                </p>
+            </header>
+
+            <!-- Overview Section -->
+            <section class="section" id="overview">
+                <h2>System Overview</h2>
+                <p>
+                    The Advanced System is a high-performance, distributed computing platform designed for enterprise-scale 
+                    applications. It utilizes microservices architecture with auto-scaling capabilities and real-time data processing.
+                </p>
+
+                <div class="info-box">
+                    <div class="info-title">⚡ Performance Benchmarks</div>
+                    <p>Handles 100k+ requests per second with sub-10ms latency. Supports horizontal scaling up to 500 nodes.</p>
+                </div>
+
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Distributed consensus algorithm for high availability</li>
+                    <li>Real-time stream processing with Apache Kafka integration</li>
+                    <li>Automatic failover and self-healing capabilities</li>
+                    <li>Multi-region deployment support</li>
+                    <li>Advanced monitoring and observability stack</li>
+                </ul>
+            </section>
+
+            <!-- Architecture Section -->
+            <section class="section" id="architecture">
+                <h2>System Architecture</h2>
+                <p>The system follows a hexagonal architecture pattern with clear separation of concerns:</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>architecture.yml</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="keyword">services:</span>
+  <span class="keyword">api-gateway:</span>
+    <span class="function">image:</span> <span class="string">adv-sys/gateway:v2.4</span>
+    <span class="function">ports:</span>
+      - <span class="string">"8080:8080"</span>
+    <span class="function">environment:</span>
+      - <span class="string">CLUSTER_MODE=enabled</span>
+      - <span class="string">MAX_CONNECTIONS=10000</span>
+  
+  <span class="keyword">worker-nodes:</span>
+    <span class="function">replicas:</span> <span class="number">5</span>
+    <span class="function">resources:</span>
+      <span class="function">cpu:</span> <span class="number">4</span>
+      <span class="function">memory:</span> <span class="string">8Gi</span></code></pre>
+                </div>
+
+                <h3>Data Flow</h3>
+                <p>Incoming requests are processed through the following pipeline:</p>
+                <ol>
+                    <li><strong>Load Balancer</strong> - Distributes traffic using least-connections algorithm</li>
+                    <li><strong>API Gateway</strong> - Authentication, rate limiting, and request routing</li>
+                    <li><strong>Service Mesh</strong> - Inter-service communication with mTLS</li>
+                    <li><strong>Data Layer</strong> - Sharded database cluster with read replicas</li>
+                </ol>
+            </section>
+
+            <!-- Installation -->
+            <section class="section" id="installation">
+                <h2>Installation</h2>
+                
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li>Docker Engine 20.10+</li>
+                    <li>Kubernetes 1.24+ (for clustered mode)</li>
+                    <li>Helm 3.0+</li>
+                    <li>Minimum 16GB RAM, 8 CPU cores</li>
+                </ul>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>Terminal</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Install using Helm</span>
+<span class="function">helm repo add</span> advanced-system https://charts.advsys.io
+<span class="function">helm repo update</span>
+
+<span class="comment"># Install with production values</span>
+<span class="function">helm install</span> adv-sys advanced-system/advanced \
+  <span class="keyword">--namespace</span> production \
+  <span class="keyword">--values</span> values-prod.yaml</code></pre>
+                </div>
+
+                <div class="warning-box info-box">
+                    <div class="info-title">⚠️ Warning</div>
+                    <p>Ensure your cluster has sufficient resources before enabling clustering mode. Insufficient resources may cause split-brain scenarios.</p>
+                </div>
+            </section>
+
+            <!-- Configuration -->
+            <section class="section" id="environment">
+                <h2>Environment Configuration</h2>
+                <p>Configure the system using environment variables or the configuration file:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="inline-code">NODE_ENV</code></td>
+                            <td>development</td>
+                            <td>Runtime environment mode</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline-code">CLUSTER_SHARDS</code></td>
+                            <td>3</td>
+                            <td>Number of data shards</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline-code">REDIS_CLUSTER</code></td>
+                            <td>false</td>
+                            <td>Enable Redis clustering</td>
+                        </tr>
+                        <tr>
+                            <td><code class="inline-code">LOG_LEVEL</code></td>
+                            <td>info</td>
+                            <td>Logging verbosity (debug, info, warn, error)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- API Reference -->
+            <section class="section" id="endpoints">
+                <h2>API Endpoints</h2>
+                
+                <h3>System Health</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>GET /api/v2/health</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment">// Response</span>
+{
+  <span class="string">"status"</span>: <span class="string">"healthy"</span>,
+  <span class="string">"timestamp"</span>: <span class="string">"2024-01-15T10:30:00Z"</span>,
+  <span class="string">"version"</span>: <span class="string">"2.4.0"</span>,
+  <span class="string">"metrics"</span>: {
+    <span class="string">"cpu_usage"</span>: <span class="number">45.2</span>,
+    <span class="string">"memory_usage"</span>: <span class="number">62.1</span>,
+    <span class="string">"active_connections"</span>: <span class="number">1247</span>
+  }
+}</code></pre>
+                </div>
+
+                <h3>Advanced Processing</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>POST /api/v2/process</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment">// Request Body</span>
+{
+  <span class="string">"job_type"</span>: <span class="string">"distributed_compute"</span>,
+  <span class="string">"priority"</span>: <span class="number">10</span>,
+  <span class="string">"payload"</span>: {
+    <span class="string">"algorithm"</span>: <span class="string">"parallel_matrix"</span>,
+    <span class="string">"data_nodes"</span>: [<span class="string">"node-1"</span>, <span class="string">"node-2"</span>, <span class="string">"node-3"</span>],
+    <span class="string">"timeout"</span>: <span class="number">30000</span>
+  },
+  <span class="string">"callback_url"</span>: <span class="string">"https://api.yourservice.com/webhooks/completed"</span>
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Advanced Topics -->
+            <section class="section" id="clustering">
+                <h2>Clustering & High Availability</h2>
+                <p>Enable clustering mode for production deployments requiring 99.99% uptime.</p>
+
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>cluster-config.json</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code>{
+  <span class="string">"cluster"</span>: {
+    <span class="string">"enabled"</span>: <span class="keyword">true</span>,
+    <span class="string">"node_id"</span>: <span class="string">"auto"</span>,
+    <span class="string">"discovery"</span>: {
+      <span class="string">"type"</span>: <span class="string">"kubernetes"</span>,
+      <span class="string">"namespace"</span>: <span class="string">"production"</span>,
+      <span class="string">"selector"</span>: <span class="string">"app=adv-sys-worker"</span>
+    },
+    <span class="string">"consensus"</span>: {
+      <span class="string">"algorithm"</span>: <span class="string">"raft"</span>,
+      <span class="string">"election_timeout"</span>: <span class="number">1000</span>,
+      <span class="string">"heartbeat_interval"</span>: <span class="number">100</span>
+    }
+  }
+}</code></pre>
+                </div>
+
+                <div class="info-box success-box">
+                    <div class="info-title">✅ Best Practice</div>
+                    <p>Always deploy an odd number of nodes (3, 5, or 7) to maintain quorum during network partitions.</p>
+                </div>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section class="section" id="troubleshooting">
+                <h2>Troubleshooting</h2>
+                
+                <h3>Common Issues</h3>
+                
+                <h4>Node Split-Brain</h4>
+                <p>If nodes lose connectivity to each other, they may form separate clusters.</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>Diagnostic Command</span>
+                        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <pre><code><span class="comment"># Check cluster status</span>
+<span class="function">kubectl exec</span> -it adv-sys-0 -- <span class="function">cluster-admin</span> status
+
+<span class="comment"># Force node rejoin</span>
+<span class="function">cluster-admin</span> node recover --force-sync</code></pre>
+                </div>
+
+                <h4>Memory Leaks</h4>
+                <p>If experiencing OOM (Out of Memory) errors:</p>
+                <ul>
+                    <li>Enable heap dumps: <code class="inline-code">--heapsnapshot-on-oom</code></li>
+                    <li>Review garbage collection logs</li>
+                    <li>Check for unclosed connections in custom plugins</li>
+                </ul>
+
+                <div class="info-box danger-box">
+                    <div class="info-title">🚨 Critical</div>
+                    <p>Never manually edit the <code class="inline-code">/data/consensus</code> directory while the system is running. This may corrupt the distributed state.</p>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.875rem;">
+                <p>Last updated: January 2024 | System Version 2.4.0</p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="#" style="color: var(--accent); text-decoration: none;">Report Issue</a> • 
+                    <a href="#" style="color: var(--accent); text-decoration: none;">Edit Page</a> • 
+                    <a href="#" style="color: var(--accent); text-decoration: none;">API Status</a>
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Mobile Sidebar Toggle
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+        }
+
+        // Close sidebar when clicking on mobile
+        document.addEventListener('click', function(e) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.mobile-toggle');
+            
+            if (window.innerWidth <= 1024 && 
+                !sidebar.contains(e.target) && 
+                !toggle.contains(e.target) && 
+                sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
+
+        // Active Navigation Link
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Progress bar
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // Copy Code Functionality
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const original = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = 'var(--success)';
+                
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+
+        // Search Functionality (Simple)
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('.section');
+            
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                if (text.includes(term)) {
+                    section.style.opacity = '1';
+                    section.style.display = 'block';
+                } else {
+                    section.style.opacity = '0.3';
+                }
+                
+                if (term === '') {
+                    section.style.opacity = '1';
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
